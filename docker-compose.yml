@@ -1,0 +1,27 @@
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: rackops-postgres
+    restart: always
+
+    environment:
+      POSTGRES_DB: rackops
+      POSTGRES_USER: rackops_user
+      POSTGRES_PASSWORD: rackops_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rackops_user -d rackops"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  postgres_data:
